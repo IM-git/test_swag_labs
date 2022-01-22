@@ -1,3 +1,7 @@
 venv
 .idea
 .git
+__pycache__
+debug.json
+geckodriver.log
+.pytest_cache

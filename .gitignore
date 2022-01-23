@@ -5,3 +5,4 @@ __pycache__
 debug.json
 geckodriver.log
 .pytest_cache
+allureress

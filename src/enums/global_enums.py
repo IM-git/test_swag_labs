@@ -20,3 +20,11 @@ class InventoryErrorMessages(Enum):
 
 class CheckoutStepOneErrorMessages(Enum):
     WRONG_PAGE = 'This is other page, right link: https://www.saucedemo.com/checkout-step-one.html'
+
+
+class CheckoutStepTwoErrorMessages(Enum):
+    WRONG_PAGE = 'This is other page, right link: https://www.saucedemo.com/checkout-step-two.html'
+
+
+class CheckoutCompleteErrorMessages(Enum):
+    WRONG_PAGE = 'This is other page, right link: https://www.saucedemo.com/checkout-complete.html'

@@ -3,17 +3,11 @@ import allure
 from selenium.webdriver.common.by import By
 import time
 
-from pages import LoginPage
-from pages import InventoryPage
-from pages import CheckoutStepOnePage
-from locators import Base
-from locators import Login
-from locators import Inventory
-from locators import CheckoutStepOne
-from src.enums import GlobalErrorMessages
-from src.enums import LoginPageErrorMessages
-from src.enums import InventoryErrorMessages
+from pages import *
+from locators import *
+from src.enums import *
 from tools import Logger
+from tools.allure_screenshot import taking_screenshot
 from tools import AllureScreenshot
 
 
@@ -24,6 +18,9 @@ def test_standard_steps(browser):
     login_page = LoginPage()
     inventory_page = InventoryPage()
     checkout_step_one_page = CheckoutStepOnePage()
+    checkout_step_two_page = CheckoutStepTwoPage()
+    checkout_complete_page = CheckoutCompletePage()
+
     page_response = requests.get(url=Base.LINK)
     open_login_page = login_page.open_page(browser, Base.LINK)
     check_is_displayed_element_img = login_page.check_is_displayed(
@@ -34,6 +31,7 @@ def test_standard_steps(browser):
         browser, By.XPATH, Login.USERNAME_FIELD, Login.LIST_NAMES[0])
     enter_password = login_page.enter_value(
         browser, By.XPATH, Login.PASSWORD_FIELD, Login.PASSWORD)
+    taking_screenshot(browser)
     click_login_button = login_page.click_element(
         browser, By.XPATH, Login.BUTTON)
     
@@ -50,20 +48,33 @@ def test_standard_steps(browser):
             browser, By.XPATH, Inventory.SHOPPING_CARD_BADGE)
     get_number_of_purchases = inventory_page.get_text(
         browser, By.XPATH, Inventory.SHOPPING_CARD_BADGE)
+    taking_screenshot(browser)
     click_shopping_cart_link_buttons = inventory_page.click_element(
         browser, By.XPATH, Inventory.SHOPPING_CARD_LINK)
+
     check_is_displayed_element_checkout_buttons = \
         inventory_page.check_is_displayed(
             browser, By.XPATH, Inventory.BUTTON_CHECKOUT)
+    wait_is_clickable_button = \
+        checkout_step_two_page.wait_element_to_be_clickable(
+            browser, By.XPATH, Inventory.BUTTON_CHECKOUT)
+    get_current_url_on_inventory_page = \
+        checkout_step_two_page.get_url(browser)
+    page_response_with_inventory_page = requests.get(
+        url=get_current_url_on_inventory_page)
+    taking_screenshot(browser)
     click_checkout_buttons = inventory_page.click_element(
         browser, By.XPATH, Inventory.BUTTON_CHECKOUT)
 
-    check_is_displayed_element_continue = checkout_step_one_page.check_is_displayed(
+    check_is_displayed_input = checkout_step_one_page.check_is_displayed(
         browser, By.XPATH, CheckoutStepOne.INPUT_CONTINUE)
-    wait_is_clickable_button = login_page.wait_element_to_be_clickable(
-        browser, By.XPATH, CheckoutStepOne.INPUT_CONTINUE)
-    get_current_url_2 = checkout_step_one_page.get_url(browser)
-    page_response_with_checkout = requests.get(url=get_current_url_2)
+    wait_is_clickable_input = \
+        checkout_step_one_page.wait_element_to_be_clickable(
+            browser, By.XPATH, CheckoutStepOne.INPUT_CONTINUE)
+    get_current_url_on_checkout_step_one = \
+        checkout_step_one_page.get_url(browser)
+    page_response_with_checkout_step_one = requests.get(
+        url=get_current_url_on_checkout_step_one)
     enter_first_name = checkout_step_one_page.enter_value(
         browser, By.XPATH, CheckoutStepOne.INPUT_FIRST_NAME,
         CheckoutStepOne.FIRST_NAME)
@@ -73,13 +84,40 @@ def test_standard_steps(browser):
     enter_zip_postal_code = checkout_step_one_page.enter_value(
         browser, By.XPATH, CheckoutStepOne.INPUT_ZIP_POSTAL_CODE,
         CheckoutStepOne.ZIP_POSTAL_CODE)
-    click_continue_button = checkout_step_one_page.click_element(
+    taking_screenshot(browser)
+    click_continue_input = checkout_step_one_page.click_element(
         browser, By.XPATH, CheckoutStepOne.INPUT_CONTINUE)
 
-    time.sleep(3)
+    check_is_displayed_button = checkout_step_two_page.check_is_displayed(
+        browser, By.XPATH, CheckoutStepTwo.BUTTON_FINISH)
+    wait_is_clickable_button = \
+        checkout_step_two_page.wait_element_to_be_clickable(
+            browser, By.XPATH, CheckoutStepTwo.BUTTON_FINISH)
+    get_current_url_on_checkout_step_two = \
+        checkout_step_two_page.get_url(browser)
+    page_response_with_checkout_step_two = requests.get(
+        url=get_current_url_on_checkout_step_two)
+    taking_screenshot(browser)
+    click_finish_button = checkout_step_two_page.click_element(
+        browser, By.XPATH, CheckoutStepTwo.BUTTON_FINISH)
+
+    check_is_displayed_button = checkout_complete_page.check_is_displayed(
+        browser, By.XPATH, CheckoutComplete.BUTTON_BACK_HOME)
+    wait_is_clickable_button = \
+        checkout_complete_page.wait_element_to_be_clickable(
+            browser, By.XPATH, CheckoutComplete.BUTTON_BACK_HOME)
+    get_current_url_on_checkout_complete = \
+        checkout_complete_page.get_url(browser)
+    page_response_with_checkout_complete = requests.get(
+        url=get_current_url_on_checkout_complete)
+    taking_screenshot(browser)
+    click_finish_button = checkout_complete_page.click_element(
+        browser, By.XPATH, CheckoutComplete.BUTTON_BACK_HOME)
+    taking_screenshot(browser)
 
     assert page_response.status_code == 200, \
         GlobalErrorMessages.WRONG_STATUS_CODE.value
+
     assert page_response_with_inventory.status_code == 404, \
         GlobalErrorMessages.WRONG_STATUS_CODE.value
     assert Inventory.LINK == get_current_url, \
@@ -88,9 +126,34 @@ def test_standard_steps(browser):
         InventoryErrorMessages.WRONG_DISPLAYED.value
     assert int(get_number_of_purchases) == 2,\
         InventoryErrorMessages.WRONG_NUMBER_OF_PURCHASES.value
-    assert page_response_with_checkout.status_code == 404, \
-        GlobalErrorMessages.WRONG_STATUS_CODE.value
-    assert Inventory.LINK == get_current_url, \
-        LoginPageErrorMessages.WRONG_PAGE.value
 
-    taking_screenshot = AllureScreenshot().make_screenshot(browser)
+    assert page_response_with_checkout_step_one.status_code == 404, \
+        GlobalErrorMessages.WRONG_STATUS_CODE.value
+    assert CheckoutStepOne.LINK == get_current_url_on_checkout_step_one, \
+        CheckoutStepOneErrorMessages.WRONG_PAGE.value
+
+    assert page_response_with_checkout_step_two.status_code == 404, \
+        GlobalErrorMessages.WRONG_STATUS_CODE.value
+    assert CheckoutStepTwo.LINK == get_current_url_on_checkout_step_two, \
+        CheckoutStepTwoErrorMessages.WRONG_PAGE.value
+
+    assert page_response_with_checkout_complete.status_code == 404, \
+        GlobalErrorMessages.WRONG_STATUS_CODE.value
+    assert CheckoutComplete.LINK == get_current_url_on_checkout_complete, \
+        CheckoutCompleteErrorMessages.WRONG_PAGE.value
+
+
+# def foo():
+#     check_is_displayed_element_checkout_buttons = \
+#         inventory_page.check_is_displayed(
+#             browser, By.XPATH, Inventory.BUTTON_CHECKOUT)
+#     wait_is_clickable_button = \
+#         checkout_step_two_page.wait_element_to_be_clickable(
+#             browser, By.XPATH, Inventory.BUTTON_CHECKOUT)
+#     get_current_url_on_inventory_page = \
+#         checkout_step_two_page.get_url(browser)
+#     page_response_with_inventory_page = requests.get(
+#         url=get_current_url_on_inventory_page)
+#     taking_screenshot(browser)
+#     click_checkout_buttons = inventory_page.click_element(
+#         browser, By.XPATH, Inventory.BUTTON_CHECKOUT)

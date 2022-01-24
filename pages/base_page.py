@@ -7,6 +7,7 @@ from elements.base_elements import BaseElements
 from locators import Base
 from tools import Logger
 from tools import MouseKeyboardActions
+from tools import AllureScreenshot
 
 
 class BasePage:

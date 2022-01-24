@@ -11,3 +11,7 @@ class AllureScreenshot:
         with allure.step("Make screenshot"):
             allure.attach(driver.get_screenshot_as_png(), name='Screenshot',
                           attachment_type=AttachmentType.PNG)
+
+
+def taking_screenshot(browser):
+    AllureScreenshot().make_screenshot(browser)

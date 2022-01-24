@@ -1,6 +1,6 @@
 import pytest
-from patterns.factory import Factory
-from tools.read_file import ReadFile
+from patterns import Factory
+from tools import ReadFile
 
 
 IMPLICITLY_WAIT_TIME = 10

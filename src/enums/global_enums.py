@@ -16,3 +16,7 @@ class LoginPageErrorMessages(Enum):
 class InventoryErrorMessages(Enum):
     WRONG_DISPLAYED = "The element isn't displayed!!"
     WRONG_NUMBER_OF_PURCHASES = 'The number of purchases must be equals: 2!!'
+
+
+class CheckoutStepOneErrorMessages(Enum):
+    WRONG_PAGE = 'This is other page, right link: https://www.saucedemo.com/checkout-step-one.html'

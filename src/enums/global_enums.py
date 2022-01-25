@@ -11,6 +11,8 @@ class GlobalErrorMessages(Enum):
 
 class LoginPageErrorMessages(Enum):
     WRONG_PAGE = 'This is other page, right link: https://www.saucedemo.com/inventory.html'
+    LOGIN_COOKIE = 'Cookies should not be!!'
+    MISMATCH = 'Value is not match!!'
 
 
 class InventoryErrorMessages(Enum):

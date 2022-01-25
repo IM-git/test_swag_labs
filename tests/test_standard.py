@@ -6,15 +6,20 @@ import time
 from pages import *
 from locators import *
 from src.enums import *
-from tools import Logger
+from tools import logger as Logger
 from tools.allure_screenshot import taking_screenshot
 from tools import AllureScreenshot
 
 
-@allure.feature("Main page.")
-@allure.link(url=Base.LINK, name='BASE_LINK')
-# @Logger.logger.catch()
+@allure.feature("Main pages.")
+@allure.link(url=Login.LINK, name='LOGIN_LINK')
+@Logger.logger.catch()
 def test_standard_steps(browser):
+    """Log in to the site. Chose two things to buy.
+    Checking the number of items in the trading card icon.
+    Checking the things we have chosen. Entered first name,
+    last name, zip/postal code.
+    Expect that the purchase was completed correctly."""
     login_page = LoginPage()
     inventory_page = InventoryPage()
     checkout_step_one_page = CheckoutStepOnePage()

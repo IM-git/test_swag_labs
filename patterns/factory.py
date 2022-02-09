@@ -16,6 +16,10 @@ class Factory:
             return Factory.chrome_browser()
         elif config['browser'] == 'firefox':
             return Factory.firefox_browser()
+        elif config['browser'] == 'chrome_selenoid':
+            return Factory.chrome_browser_selenoid()
+        elif config['browser'] == 'firefox_selenoid':
+            return Factory.firefox_browser_selenoid()
         else:
             raise Exception(f' We are not use the "{Factory.config_browser(config)}".')
 
@@ -23,7 +27,6 @@ class Factory:
     def chrome_browser():
         option = OChrome()
         chrome_service = SChrome(ChromeDriverManager().install())
-        # driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
         driver = webdriver.Chrome(service=chrome_service, options=option)
         return driver
 
@@ -31,8 +34,23 @@ class Factory:
     def firefox_browser():
         option = OFirefox()
         firefox_service = SFirefox(GeckoDriverManager().install())
-        # driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
         driver = webdriver.Firefox(service=firefox_service, options=option)
+        return driver
+
+    @staticmethod
+    def chrome_browser_selenoid():
+        driver = webdriver.Remote(
+            command_executor='http://localhost:4444/wd/hub',
+            options=webdriver.ChromeOptions()
+        )
+        return driver
+
+    @ staticmethod
+    def firefox_browser_selenoid():
+        driver = webdriver.Remote(
+            command_executor='http://localhost:4444/wd/hub',
+            options=webdriver.FirefoxOptions()
+        )
         return driver
 
     @staticmethod

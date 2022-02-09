@@ -7,3 +7,6 @@ geckodriver.log
 .pytest_cache
 allureress
 main.py
+cm.exe
+*.png
+run_selenoid.txt

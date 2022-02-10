@@ -3,10 +3,11 @@ Pytest+Selenoid+Docker+Allure
 
 ***Steps for performing tests using selenoid, pytest, docker, allure.***    
 For pre-initialization browser  in 
-fixtures used factory pattern.(**conftest.py**).
-Used **selenium.webdriver.chrome / selenium.webdriver.firefox** and
-added an option to use selenoid(
-Look **chrome_browser_selenoid** and **firefox_browser_selenoid** methods).
+fixtures used factory pattern(**tests/conftest.py**).
+Used **selenium.webdriver.chrome, selenium.webdriver.firefox** and
+added an option to use selenoid. 
+Look in **chrome_browser_selenoid** and **firefox_browser_selenoid** methods
+(_patterns/factory.py/_).
 
 ## For Windows 7 and above.
 
@@ -16,7 +17,7 @@ Create the virtual environment:
 Run the virtual environment:
 - `.\venv\Scripts\activate`
 
-Download selenoid with the command:
+Download selenoid with the command(_it is one-line command_):
 - `(New-Object Net.WebClient).DownloadFile('https://github.com/aerokube/cm/releases/download/1.8.1/cm_windows_amd64.exe', 'cm.exe')`
 
 After that how docker images are downloaded, run selenoid with the command:
@@ -79,6 +80,13 @@ Open in browser link:
 >Run the allure:
 >- allure serve allureress
 
+
+>Don't forget remove docker containers after tests.  
+>If you haven't created other containers, use:
+>- docker stop $(docker ps -qa)
+>- docker rm $(docker ps -qa)
+ 
+When working on linux, you may need to use `sudo` for some commands(for example, in docker).
 
 ### Example of test cases on the website: _https://www.saucedemo.com_
 

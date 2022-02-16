@@ -5,6 +5,7 @@ from selenium.webdriver.chrome.options import Options as OChrome
 from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.firefox.service import Service as SFirefox
 from selenium.webdriver.firefox.options import Options as OFirefox
+from selenoid import capabilities
 
 
 class Factory:
@@ -52,6 +53,16 @@ class Factory:
             options=webdriver.FirefoxOptions()
         )
         return driver
+
+    # @staticmethod
+    # def any_browser_selenoid():
+    #     """Instead of to use several methods,
+    #      can use one unique method for all browsers.
+    #      Will need to change the values in 'capabilities'. """
+    #     driver = webdriver.Remote(
+    #         command_executor="127.0.0.1:4444/wd/hub",
+    #         desired_capabilities=capabilities)
+    #     return driver
 
     @staticmethod
     def config_browser(config):

@@ -31,7 +31,7 @@ def test_standard_steps(browser):
     check_is_displayed_element_img = login_page.check_is_displayed(
         browser, By.XPATH, Login.ELEMENT_IMG)
     wait_is_clickable_button = login_page.wait_element_to_be_clickable(
-        browser, By.XPATH, Login.BUTTON)
+        browser, By.XPATH, Login.BUTTON, Base.TIME)
     enter_username = login_page.enter_value(
         browser, By.XPATH, Login.USERNAME_FIELD, Login.LIST_NAMES[0])
     enter_password = login_page.enter_value(
@@ -62,7 +62,7 @@ def test_standard_steps(browser):
             browser, By.XPATH, Inventory.BUTTON_CHECKOUT)
     wait_is_clickable_button = \
         checkout_step_two_page.wait_element_to_be_clickable(
-            browser, By.XPATH, Inventory.BUTTON_CHECKOUT)
+            browser, By.XPATH, Inventory.BUTTON_CHECKOUT, Base.TIME)
     get_current_url_on_inventory_page = \
         checkout_step_two_page.get_url(browser)
     page_response_with_inventory_page = requests.get(
@@ -75,7 +75,7 @@ def test_standard_steps(browser):
         browser, By.XPATH, CheckoutStepOne.INPUT_CONTINUE)
     wait_is_clickable_input = \
         checkout_step_one_page.wait_element_to_be_clickable(
-            browser, By.XPATH, CheckoutStepOne.INPUT_CONTINUE)
+            browser, By.XPATH, CheckoutStepOne.INPUT_CONTINUE, Base.TIME)
     get_current_url_on_checkout_step_one = \
         checkout_step_one_page.get_url(browser)
     page_response_with_checkout_step_one = requests.get(
@@ -97,7 +97,7 @@ def test_standard_steps(browser):
         browser, By.XPATH, CheckoutStepTwo.BUTTON_FINISH)
     wait_is_clickable_button = \
         checkout_step_two_page.wait_element_to_be_clickable(
-            browser, By.XPATH, CheckoutStepTwo.BUTTON_FINISH)
+            browser, By.XPATH, CheckoutStepTwo.BUTTON_FINISH, Base.TIME)
     get_current_url_on_checkout_step_two = \
         checkout_step_two_page.get_url(browser)
     page_response_with_checkout_step_two = requests.get(
@@ -110,7 +110,7 @@ def test_standard_steps(browser):
         browser, By.XPATH, CheckoutComplete.BUTTON_BACK_HOME)
     wait_is_clickable_button = \
         checkout_complete_page.wait_element_to_be_clickable(
-            browser, By.XPATH, CheckoutComplete.BUTTON_BACK_HOME)
+            browser, By.XPATH, CheckoutComplete.BUTTON_BACK_HOME, Base.TIME)
     get_current_url_on_checkout_complete = \
         checkout_complete_page.get_url(browser)
     page_response_with_checkout_complete = requests.get(

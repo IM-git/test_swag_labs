@@ -4,3 +4,4 @@ from .allure_screenshot import AllureScreenshot
 from .read_file import ReadFile
 from .random_tools import RandomTools
 from .data_names import DataNames
+from .comparing import Comparing

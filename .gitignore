@@ -11,3 +11,4 @@ cm.exe
 *.png
 run_selenoid.txt
 ./tests/example_main.py
+example_sql.py

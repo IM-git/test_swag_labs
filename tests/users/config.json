@@ -1,0 +1,4 @@
+{
+  "name_database": "login_password.db",
+  "sql_request": "SELECT login, password FROM users"
+}

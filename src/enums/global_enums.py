@@ -30,3 +30,7 @@ class CheckoutStepTwoErrorMessages(Enum):
 
 class CheckoutCompleteErrorMessages(Enum):
     WRONG_PAGE = 'This is other page, right link: https://www.saucedemo.com/checkout-complete.html'
+
+
+class SQLErrorMessages(Enum):
+    NOT_MATCH = "These list don't match!"

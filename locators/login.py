@@ -1,5 +1,5 @@
 class Login:
-    LINK = "https://www.saucedemo.com/"
+    LINK = "https://www.saucedemo.com"
     USERNAME_FIELD = "//input[@id='user-name']"
     PASSWORD_FIELD = "//input[@id='password']"
     ELEMENT_IMG = "//div[@class='bot_column']"

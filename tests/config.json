@@ -1,4 +1,4 @@
 {
-  "browser": "chrome_selenoid",
+  "browser": "chrome",
   "wait_time": 10
 }

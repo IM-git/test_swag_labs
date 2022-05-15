@@ -1,57 +1,74 @@
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.by import By
+import requests
+
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
+
 from elements.base_elements import BaseElements
+from src.enums import *
+from locators import *
+
 from tools import Logger
 from tools import MouseKeyboardActions
-from tools import AllureScreenshot
+from tools.allure_screenshot import taking_screenshot
+
+RESPONSE_STATUS_200 = 200
+RESPONSE_STATUS_404 = 404
 
 
 class BasePage:
 
-    def __init__(self):
+    def __init__(self, browser=None, url=None):
+        self.browser = browser
+        self.url = url
         self.base_element = BaseElements()
+        self.mouse_keyboard_actions = MouseKeyboardActions(self.browser)
 
-    def open_page(self, browser, link):
-        Logger().info(f"Open page: {link}.")
-        browser.get(link)
-
-    def get_url(self, browser):
-        return browser.current_url
-
-    def get_text(self, browser, locator, element):
-        Logger().info(f"Get text from element: {element}.")
-        return self.base_element._get_text(
-            self.base_element._find_element(browser, locator, element))
-
-    def wait_element_to_be_clickable(self, browser, locator, element, time=10):
-        Logger().info(f"Wait element to be clickable(Element: {element}).")
-        value = BaseElements._find_element(browser, locator, element)
-        return WebDriverWait(browser, time).until(
-            EC.element_to_be_clickable(value))
-
-    def check_is_displayed(self, browser, locator, element):
+    def check_is_displayed(self, locator, element):
         Logger().info(f"Check is displayed element: {element}.")
-        __implicitly_wait_time = 1
-        browser.implicitly_wait(__implicitly_wait_time)
-        try:
-            BaseElements._find_element(browser, locator, element).\
-                is_displayed()
-        except NoSuchElementException:
-            return False
-        return True
+        value = BaseElements.find_element(
+            self.browser, locator, element).is_displayed()
+        assert value is True, \
+            (GlobalErrorMessages.WRONG_IS_DISPLAYED.value,
+             taking_screenshot(self.browser))
 
-    def click_element(self, browser, locator, element):
+    def checks_page_response_404(self):
+        url = self.get_url()
+        response = requests.get(url=url)
+        assert response.status_code == RESPONSE_STATUS_404,\
+            GlobalErrorMessages.WRONG_STATUS_CODE.value
+        assert self.url == url, LoginPageErrorMessages.WRONG_PAGE.value
+
+    def click_element(self, locator, element):
         Logger().info(f"Click element: {element}.")
-        return self.base_element._click(
-            self.base_element._find_element(browser, locator, element))
+        return self.base_element.click(
+            self.base_element.find_element(self.browser, locator, element))
 
-    def enter_value(self, browser, locator, element, name):
+    def enter_value(self, locator, element, name):
         Logger().info(f"Enter value(Element: {element}, name: {name}).")
-        value = self.base_element._find_element(
-            browser, locator, element)
-        click = self.base_element._click(value)
-        MouseKeyboardActions()._enter_text(browser, name)
+        value = self.base_element.find_element(
+            self.browser, locator, element)
+        self.base_element.click(value)
+        self.mouse_keyboard_actions.enter_text(name)
 
+    def get_url(self):
+        return self.browser.current_url
+
+    def get_text(self, locator, element):
+        Logger().info(f"Get text from element: {element}.")
+        return self.base_element.get_text(
+            self.base_element.find_element(self.browser, locator, element))
+
+    def open_page(self):
+        Logger().info(f"Open page: {self.url}.")
+        self.browser.get(self.url)
+
+    def page_response(self):
+        response = requests.get(url=self.url)
+        assert response.status_code == RESPONSE_STATUS_200,\
+            GlobalErrorMessages.WRONG_STATUS_CODE.value
+
+    def wait_element_to_be_clickable(self, locator, element, time=10):
+        Logger().info(f"Wait element to be clickable(Element: {element}).")
+        value = BaseElements.find_element(self.browser, locator, element)
+        WebDriverWait(self.browser, time).until(
+            EC.element_to_be_clickable(value))

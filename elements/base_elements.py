@@ -1,17 +1,17 @@
 class BaseElements:
 
     @staticmethod
-    def _find_element(browser, locator, element):
+    def find_element(browser, locator, element):
         return browser.find_element(locator, element)
 
     @staticmethod
-    def _click(element):
+    def click(element):
         return element.click()
 
     @staticmethod
-    def _get_to_attribute(element, attribute):
+    def get_to_attribute(element, attribute):
         return element.get_attribute(attribute)
 
     @staticmethod
-    def _get_text(element):
+    def get_text(element):
         return element.text

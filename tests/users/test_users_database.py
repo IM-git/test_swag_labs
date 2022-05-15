@@ -18,4 +18,4 @@ def test_users_database(database):
     get_only_keys = dict(getting_list_with_logins_and_password).keys()
     checking_for_match_lists = Comparing.comparing_lists(
         lists_one=get_only_keys, lists_two=Login.LIST_NAMES)
-    assert checking_for_match_lists == True, SQLErrorMessages.NOT_MATCH.value
+    assert checking_for_match_lists is True, SQLErrorMessages.NOT_MATCH.value
